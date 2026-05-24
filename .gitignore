@@ -11,3 +11,7 @@ tags
 !.gitattributes
 !.github/
 !.gitlab/
+
+# nix build artifacts
+result
+result-*
