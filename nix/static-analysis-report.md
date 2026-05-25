@@ -181,6 +181,25 @@ The flake's `nix/golangci/*.yml` configs explicitly exclude:
 
 The repo's existing `.golangci.yml` is left untouched.
 
+## Upstream submission status (as of 2026-05-24)
+
+The triage above has begun landing as upstream PRs. Counts in the executive summary remain pinned to the 2026-05-24 baseline; this section tracks what has moved against that snapshot.
+
+### Open
+
+| PR | Title | Findings closed |
+|---|---|---|
+| [NVIDIA/go-dcgm#124](https://github.com/NVIDIA/go-dcgm/pull/124) | samples/restApi: pre-parse templates (gosec G708 hardening) | 2 × `gosec` G708 HIGH (`samples/restApi/handlers/utils.go:179, 199`) |
+| [NVIDIA/go-dcgm#125](https://github.com/NVIDIA/go-dcgm/pull/125) | samples/restApi: sanitize caller-controlled log fields (G706) | 15 × `gosec` G706 LOW (9 in `samples/restApi/handlers/utils.go`, 6 in `samples/restApi/handlers/dcgm.go`) |
+| [NVIDIA/go-dcgm#126](https://github.com/NVIDIA/go-dcgm/pull/126) | samples/restApi: buffer template render before flushing to response | partial-write wart documented in #124's test file (`printer()` silently committed HTTP 200 before template-render failures could set 500); depends on #124 |
+
+### Cumulative coverage against the 2026-05-24 baseline
+
+- **`gosec` HIGH (G708)**: 2 of 5 covered by #124 (open). Remaining 3 (G703 in `cmd/gen-fields/main.go`) untouched.
+- **`gosec` LOW (G706)**: 15 of 15 covered by #125 (open).
+- **partial-write wart** (out-of-scope of #124, documented in its tests): closed by #126 (open, depends on #124).
+- **`gosec` G703 HIGH (3)**, **ST1003 (50)**, **tier-2 tech debt (revive 50, goconst 36, nakedret 15, …)** — untouched.
+
 ## Repro one-liner
 
 ```sh
